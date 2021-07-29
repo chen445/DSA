@@ -267,3 +267,45 @@
 # 0 <= n <= 1000
 # 1 <= m + n <= 2000
 # -106 <= nums1[i], nums2[i] <= 106
+
+
+
+
+# Reach The end in time
+def neigbors(grid, pos):
+    possiblities = [
+        (pos[0], pos[1]+1),
+        (pos[0], pos[1]-1),
+        (pos[0]+1, pos[1]),
+        (pos[0]-1, pos[1]),
+    ]
+    r = []
+    for neighbor in possiblities:
+        if neighbor[0] >= 0 and neighbor[0] < len(grid) and neighbor[1] >= 0 and \
+             neighbor[1] < len(grid[0]) and grid[neighbor[0]][neighbor[1]] == '.':
+            r.append(neighbor)
+    return r 
+
+def reachTheEnd(grid, maxTime):
+    # Write your code here
+    if len(grid) == 0 or len(grid[0]) == 0:
+        return "No"
+    
+    queue = [(0,0)]
+    currentTime = 0
+    visited = set()
+    while len(queue) > 0 and currentTime <= maxTime:
+        next_queue = []
+        while len(queue) != 0:
+            pos = queue.pop()
+            if pos == (len(grid)-1, len(grid[0])-1):
+                return "Yes"
+            visited.add(pos)
+            for neighbor in neigbors(grid, pos):
+                if neighbor in visited:
+                    continue
+                next_queue.append(neighbor)
+        queue = next_queue
+        currentTime += 1
+    return "No"     
+        
