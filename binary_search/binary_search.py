@@ -309,3 +309,105 @@ def reachTheEnd(grid, maxTime):
         currentTime += 1
     return "No"     
         
+
+# Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
+
+# Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
+
+# Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
+
+# Return the minimum integer k such that she can eat all the bananas within h hours.
+
+ 
+
+# Example 1:
+
+# Input: piles = [3,6,7,11], h = 8
+# Output: 4
+# Example 2:
+
+# Input: piles = [30,11,23,4,20], h = 5
+# Output: 30
+# Example 3:
+
+# Input: piles = [30,11,23,4,20], h = 6
+# Output: 23
+ 
+
+# Constraints:
+
+# 1 <= piles.length <= 104
+# piles.length <= h <= 109
+# 1 <= piles[i] <= 109
+
+ def minEatingSpeed(self, piles: List[int], h: int) -> int:
+        left,right=1,max(piles)
+        while left<right:
+            mid=left+(right-left)//2
+            if self.cal_h(mid, piles) > h:
+                left=mid+1
+            else:
+                right=mid
+        return left
+    
+    
+    def cal_h(self,k,piles):
+        hour=0
+        for pile in piles:
+            if pile % k == 0: 
+                hour+=pile //k
+            else:
+                hour+=pile//k+1
+        return hour
+
+# Given an array of integers nums and an integer threshold, we will choose a positive integer divisor, divide all the array by it, and sum the division's result. Find the smallest divisor such that the result mentioned above is less than or equal to threshold.
+
+# Each result of the division is rounded to the nearest integer greater than or equal to that element. (For example: 7/3 = 3 and 10/2 = 5).
+
+# It is guaranteed that there will be an answer.
+
+ 
+
+# Example 1:
+
+# Input: nums = [1,2,5,9], threshold = 6
+# Output: 5
+# Explanation: We can get a sum to 17 (1+2+5+9) if the divisor is 1. 
+# If the divisor is 4 we can get a sum of 7 (1+1+2+3) and if the divisor is 5 the sum will be 5 (1+1+1+2). 
+# Example 2:
+
+# Input: nums = [44,22,33,11,1], threshold = 5
+# Output: 44
+# Example 3:
+
+# Input: nums = [21212,10101,12121], threshold = 1000000
+# Output: 1
+# Example 4:
+
+# Input: nums = [2,3,5,7,11], threshold = 11
+# Output: 3
+ 
+
+# Constraints:
+
+# 1 <= nums.length <= 5 * 104
+# 1 <= nums[i] <= 106
+# nums.length <= threshold <= 106
+
+ def smallestDivisor(self, nums: List[int], threshold: int) -> int:
+        left,right=1, max(nums)
+        while left < right:
+            mid=left+(right-left)//2
+            if self.possible_divisor(nums,mid) <= threshold:
+                right=mid
+            else:
+                left= mid+1
+        return left 
+        
+    def possible_divisor(self, nums, divisor):
+        total=0
+        for num in nums:
+            total+=math.ceil(num/divisor)
+        return total
+            
+
